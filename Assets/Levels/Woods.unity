@@ -248,6 +248,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1045816891}
   - 212: {fileID: 1045816890}
+  - 50: {fileID: 1045816893}
+  - 114: {fileID: 1045816892}
   m_Layer: 0
   m_Name: Woodcutter
   m_TagString: Untagged
@@ -301,6 +303,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &1045816892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045816889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcccb4c0ebdc6914fb427dd9b2105882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAccel: 1
+  maxSpeed: 5
+  slowRadius: 3
+  maxTorque: 1
+  maxRotSpeed: 3
+  slowRotRadius: 10
+  target: {fileID: 0}
+--- !u!50 &1045816893
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045816889}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1239766793
 GameObject:
   m_ObjectHideFlags: 0
