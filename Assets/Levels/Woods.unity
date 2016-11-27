@@ -134,7 +134,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: afbb3273a4f723c49a2ba1183de84489, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -146,12 +146,12 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 18268613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.28, y: 2.84, z: 0}
+  m_LocalPosition: {x: 8.46, y: 2.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1 &623005105
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +164,8 @@ GameObject:
   - 92: {fileID: 623005108}
   - 124: {fileID: 623005107}
   - 81: {fileID: 623005106}
+  - 114: {fileID: 623005111}
+  - 114: {fileID: 623005112}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -239,6 +241,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &623005111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 623005105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3cd0c6b2a7903e4c91140aa961083c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerName: CameraBounds
+--- !u!114 &623005112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 623005105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732de23645194af4e9bba5ce2146176e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wolf: {fileID: 1239766797}
+  woodcutter: {fileID: 1045816892}
+  ridingHood: {fileID: 1379959952}
+  house: {fileID: 18268615}
 --- !u!1 &1045816889
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +279,7 @@ GameObject:
   - 212: {fileID: 1045816890}
   - 50: {fileID: 1045816893}
   - 114: {fileID: 1045816892}
+  - 58: {fileID: 1045816894}
   m_Layer: 0
   m_Name: Woodcutter
   m_TagString: Untagged
@@ -296,10 +326,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1045816889}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.71, y: -0.04, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.5990904, w: -0.8006814}
+  m_LocalPosition: {x: -5.65, y: 0.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 286.08}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -314,13 +344,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcccb4c0ebdc6914fb427dd9b2105882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAccel: 1
-  maxSpeed: 5
-  slowRadius: 3
-  maxTorque: 1
-  maxRotSpeed: 3
-  slowRotRadius: 10
-  target: {fileID: 0}
+  maxAccel_u_s2: 0.5
+  maxSpeed_u_s: 1
+  maxTorque_r_s2: 3
+  maxRotSpeed_r_s: 6
+  slowRotRadius_r: 0.2
 --- !u!50 &1045816893
 Rigidbody2D:
   serializedVersion: 2
@@ -330,14 +358,28 @@ Rigidbody2D:
   m_GameObject: {fileID: 1045816889}
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &1045816894
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045816889}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1239766793
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +389,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 1239766795}
   - 212: {fileID: 1239766794}
+  - 50: {fileID: 1239766796}
+  - 114: {fileID: 1239766797}
+  - 58: {fileID: 1239766798}
   m_Layer: 0
   m_Name: Wolf
   m_TagString: Untagged
@@ -394,12 +439,59 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1239766793}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.85, y: -1.08, z: 0}
+  m_LocalPosition: {x: -2.43, y: -1.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!50 &1239766796
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1239766793}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &1239766797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1239766793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcccb4c0ebdc6914fb427dd9b2105882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAccel_u_s2: 0.5
+  maxSpeed_u_s: 1
+  maxTorque_r_s2: 0.5
+  maxRotSpeed_r_s: 1.5
+  slowRotRadius_r: 0.2
+--- !u!58 &1239766798
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1239766793}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1379959949
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +501,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1379959951}
   - 212: {fileID: 1379959950}
+  - 50: {fileID: 1379959953}
+  - 114: {fileID: 1379959952}
   m_Layer: 0
   m_Name: Hood
   m_TagString: Untagged
@@ -456,12 +550,45 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1379959949}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.46, y: -1.74, z: 0}
+  m_LocalPosition: {x: 3.18, y: -1.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
+--- !u!114 &1379959952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1379959949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcccb4c0ebdc6914fb427dd9b2105882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAccel_u_s2: 0.5
+  maxSpeed_u_s: 1
+  maxTorque_r_s2: 1
+  maxRotSpeed_r_s: 3
+  slowRotRadius_r: 1
+--- !u!50 &1379959953
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1379959949}
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1568502338
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,4 +654,4 @@ Transform:
   m_LocalEulerAnglesHint: {x: 90, y: -90, z: 90}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
