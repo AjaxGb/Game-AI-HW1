@@ -10,7 +10,7 @@ public class SteeringWander : ISteering {
 		this.circleRadius = circleRadius;
 	}
 
-	public void getSteering(DynamicBase source, Kinematic target, ref Vector2 accel, ref float torque) {
+	public void GetSteering(DynamicBase source, Kinematic target, ref Vector2 accel, ref float torque) {
 		Vector2 position = (Vector2)source.transform.position;
 		float angle = Random.Range(0, 2 * Mathf.PI);
 		Vector2 circleCenter = position + source.forward * circleDisplacement;
@@ -22,7 +22,9 @@ public class SteeringWander : ISteering {
 		source.FaceHeading(accel, ref torque);
 
 		float cRot = source.transform.rotation.eulerAngles.z * Mathf.Deg2Rad - Mathf.PI / 2;
-		Debug.DrawRay(position, new Vector2(Mathf.Cos(torque + cRot), Mathf.Sin(torque + cRot)), Color.yellow);
+		//Debug.DrawRay(position, new Vector2(Mathf.Cos(torque + cRot), Mathf.Sin(torque + cRot)), Color.yellow);
 	}
+
+	public void UpdateDebug(DynamicBase source) { }
 
 }

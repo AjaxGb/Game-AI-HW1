@@ -10,7 +10,12 @@ public class CameraBounds : MonoBehaviour {
 		bounds.transform.SetParent(this.transform);
 		bounds.gameObject.layer = LayerMask.NameToLayer(layerName);
 		Vector2[] points = new Vector2[5];
-		Camera.main.OrthographicBounds().GetPoints().CopyTo(points, 0);
+		Rect camBounds = Camera.main.OrthographicBounds();
+		camBounds.width -= 3f;
+		camBounds.height -= 3f;
+		camBounds.x += 1.5f;
+		camBounds.y += 1.5f;
+		camBounds.GetPoints().CopyTo(points, 0);
 		points[4] = points[0];
 		bounds.points = points;
 	}

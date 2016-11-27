@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public static class Utilities {
 
@@ -28,6 +30,14 @@ public static class Utilities {
 		};
 	}
 
+	public static Vector2 VectorFromAngle(float angle, float magnitude = 1f) {
+		return new Vector2(Mathf.Cos(angle) * magnitude, Mathf.Sin(angle) * magnitude);
+	}
+
+	public static bool Approximately(float a, float b, float threshold = 0.0001f) {
+		return ((a < b) ? (b - a) : (a - b)) <= threshold;
+	}
+
 	public static void DrawRect(Rect rect, Color? color = null, float duration = 0.0f) {
 		Color realColor = color ?? Color.white;
 		Debug.DrawLine(new Vector2(rect.xMin, rect.yMin), new Vector2(rect.xMin, rect.yMax), realColor, duration, false);
@@ -37,4 +47,15 @@ public static class Utilities {
 		Debug.DrawLine(new Vector2(rect.xMin, rect.yMax), new Vector2(rect.xMax, rect.yMax), realColor, duration, false);
 	}
 
+	public static IEnumerable<TResult> Zip<TA, TB, TResult>(this IEnumerable<TA> seqA, IEnumerable<TB> seqB, Func<TA, TB, TResult> func) {
+		if (seqA == null) throw new ArgumentNullException("seqA");
+		if (seqB == null) throw new ArgumentNullException("seqB");
+
+		using (var iteratorA = seqA.GetEnumerator())
+		using (var iteratorB = seqB.GetEnumerator()) {
+			while (iteratorA.MoveNext() && iteratorB.MoveNext()) {
+				yield return func(iteratorA.Current, iteratorB.Current);
+			}
+		}
+	}
 }

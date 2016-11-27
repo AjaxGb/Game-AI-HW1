@@ -16,7 +16,8 @@ public class Kinematic {
 }
 
 public interface ISteering {
-	void getSteering(DynamicBase source, Kinematic target, ref Vector2 accel_u_s2, ref float torque_r_s2);
+	void GetSteering(DynamicBase source, Kinematic target, ref Vector2 accel_u_s2, ref float torque_r_s2);
+	void UpdateDebug(DynamicBase source);
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -47,7 +48,7 @@ public class DynamicBase : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	public ISteering steering;
 	
 	private Transform _targetChar;
@@ -57,12 +58,12 @@ public class DynamicBase : MonoBehaviour {
 		set {
 			_targetChar = value;
 			// Because Unity is crazy, and x == null doesn't always mean what it says.
-			if (!_targetChar) {
+			if (_targetChar == null) {
 				_targetChar = null;
 				_targetRB = null;
 			} else {
 				_targetRB = _targetChar.GetComponent<Rigidbody2D>();
-				if (!_targetRB) _targetRB = null;
+				if (_targetRB == null) _targetRB = null;
 			}
 		}
 	}
@@ -70,8 +71,8 @@ public class DynamicBase : MonoBehaviour {
 		get { return _targetRB; }
 		set {
 			_targetRB = value;
-
-			if (!_targetRB) {
+			// Because Unity is crazy, and x == null doesn't always mean what it says.
+			if (_targetRB == null) {
 				_targetRB = null;
 				_targetChar = null;
 			} else {
@@ -108,9 +109,8 @@ public class DynamicBase : MonoBehaviour {
 	#region Control Code
 
 	// Use this for initialization
-	void Start() {
+	void Awake() {
 		rb = GetComponent<Rigidbody2D>();
-		steering = new SteeringEvade();
 
 		if (defaultLayer == 0) defaultLayer = LayerMask.NameToLayer("Default");
 		if (stayOnCamLayer == 0) stayOnCamLayer = LayerMask.NameToLayer("StayOnCamera");
@@ -118,17 +118,21 @@ public class DynamicBase : MonoBehaviour {
 		//targetChar = GameObject.FindObjectOfType<Transform>();
 	}
 
+	void Update() {
+		if (steering != null) steering.UpdateDebug(this);
+	}
+
 	void FixedUpdate() {
 		rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed_u_s);
 		rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -maxRotSpeed_r_s, maxRotSpeed_r_s);
-
+		
 		if (steering == null) return;
 
 		Kinematic target = this.target;
 		Vector2 accel_u_s2 = Vector2.zero;
 		float torque_r_s2 = 0f;
 
-		steering.getSteering(this, target, ref accel_u_s2, ref torque_r_s2);
+		steering.GetSteering(this, target, ref accel_u_s2, ref torque_r_s2);
 
 		accel_u_s2 = Vector2.ClampMagnitude(accel_u_s2, maxAccel_u_s2);
 		Debug.DrawRay(transform.position, rb.velocity, Color.blue);
@@ -154,6 +158,7 @@ public class DynamicBase : MonoBehaviour {
 	}
 
 	public void FacePosition(Vector2 position, ref float torque) {
+		Debug.DrawLine(transform.position, position, Color.blue);
 		FaceHeading(position - (Vector2)this.transform.position, ref torque);
 	}
 
@@ -165,24 +170,39 @@ public class DynamicBase : MonoBehaviour {
 
 		// Find target speed
 		float orientation = this.orientation;
-		float targetSpeed_r_s = this.maxRotSpeed_r_s;
-		float targetRotDist = targetRot - orientation;
-		if (targetRotDist < this.slowRotRadius_r) {
-			targetSpeed_r_s *= targetRotDist / this.slowRotRadius_r;
+		Debug.DrawRay(transform.position, Utilities.VectorFromAngle(orientation));
+		Debug.DrawRay(transform.position, Utilities.VectorFromAngle(targetRot), Color.black);
+		float targetRotDist = MapSteeringRadians(targetRot - orientation);
+		float rotDistMag = Mathf.Abs(targetRotDist);
+		float targetSpeed_r_s = this.maxRotSpeed_r_s * Mathf.Sign(targetRotDist);
+		if (Mathf.Abs(targetSpeed_r_s) > rotDistMag) {
+			targetSpeed_r_s = targetRotDist;
 		}
+		//if (log) Debug.Log("(" + targetRot + "," + orientation + "," + (targetRot - orientation) + ") --> " + targetRotDist);
+		if (rotDistMag < this.slowRotRadius_r) {
+			targetSpeed_r_s *= rotDistMag / this.slowRotRadius_r;
+		}
+		//if (log) Debug.Log(targetSpeed_r_s);
+		//Debug.DrawRay(transform.position, Utilities.VectorFromAngle(orientation + targetSpeed_r_s), Color.yellow);
 
 		// Find target rotAccel
-		torque = targetSpeed_r_s - this.rb.angularVelocity * Mathf.Deg2Rad;
-		torque = Mathf.Clamp(torque, -this.maxAccel_u_s2, this.maxAccel_u_s2);
+		torque = targetSpeed_r_s - (this.rb.angularVelocity * Mathf.Deg2Rad);
+		//if (log) Debug.Log(torque);
+		torque = Mathf.Clamp(MapSteeringRadians(torque), -this.maxAccel_u_s2, this.maxAccel_u_s2);
+		//if (log) Debug.Log(torque);
 	}
-	
-	//public static float MapSteeringRadians(float rot) {
-	//	float oldRot = rot;
-	//	rot += Mathf.PI;
-	//	rot = ((rot % TAU) + TAU) % TAU;
-	//	rot -= Mathf.PI;
-	//	return rot;
-	//}
+
+	public static float MapSteeringRadians(float rot) {
+		float rot2 = rot;
+		rot += Mathf.PI;
+		rot = ((rot % TAU) + TAU) % TAU;
+		rot -= Mathf.PI;
+		while (rot2 >= Mathf.PI) rot2 -= TAU;
+		while (rot2 < -Mathf.PI) rot2 += TAU;
+		if (!Utilities.Approximately(rot, rot2)) Debug.Log(rot + "!=" + rot2);
+		if (rot2 > Mathf.PI || rot2 < -Mathf.PI) Debug.Log(rot2);
+		return rot2;
+	}
 
 	//public static Vector2 Project(Vector2 a, Vector2 b) {
 	//	return (Vector2.Dot(a, b) / Vector2.Dot(b, b)) * b;
