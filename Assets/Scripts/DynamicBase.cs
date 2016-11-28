@@ -86,10 +86,10 @@ public class DynamicBase : MonoBehaviour {
 			if (targetChar == null) return null;
 			Vector2 forward = -targetChar.up;
 			return new Kinematic(
-				targetChar.position,                              // Units
-				Mathf.Atan2(forward.y, forward.x),                // Radians
-				targetRB?.velocity ?? Vector2.zero,               // Units/sec
-				(targetRB?.angularVelocity ?? 0f) * Mathf.Deg2Rad // Radians/sec
+				targetChar.position,                                               // Units
+				Mathf.Atan2(forward.y, forward.x),                                 // Radians
+				(targetRB != null) ? targetRB.velocity : Vector2.zero,             // Units/sec
+				(targetRB != null) ? targetRB.angularVelocity * Mathf.Deg2Rad : 0f // Radians/sec
 			);
 		}
 	}

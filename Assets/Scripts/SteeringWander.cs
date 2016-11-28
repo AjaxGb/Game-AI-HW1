@@ -20,9 +20,6 @@ public class SteeringWander : ISteering {
 		source.Seek(wanderTarget, ref accel);
 		Debug.DrawRay(position, accel * 5, Color.black);
 		source.FaceHeading(accel, ref torque);
-
-		float cRot = source.transform.rotation.eulerAngles.z * Mathf.Deg2Rad - Mathf.PI / 2;
-		//Debug.DrawRay(position, new Vector2(Mathf.Cos(torque + cRot), Mathf.Sin(torque + cRot)), Color.yellow);
 	}
 
 	public void UpdateDebug(DynamicBase source) { }
