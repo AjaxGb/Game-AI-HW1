@@ -31,7 +31,7 @@ public class SteeringPath : ISteering {
 
 		// Predict and face location
 		float nearestDistFromStart;
-		Vector2 nearestPoint = NearestPoint(source.transform.position, out nearestDistFromStart);
+		NearestPoint(source.transform.position, out nearestDistFromStart);
 
 		target.position_u = PointAtDist(nearestDistFromStart + this.targetDist);
 		source.FacePosition(target.position_u, ref torque_r_s2);
