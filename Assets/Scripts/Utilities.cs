@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utilities {
 
@@ -57,5 +58,34 @@ public static class Utilities {
 				yield return func(iteratorA.Current, iteratorB.Current);
 			}
 		}
+	}
+	
+	public static Text MakeText(this Canvas canvas, string name, Font font, string contents) {
+		GameObject go = new GameObject(name);
+		go.transform.SetParent(canvas.transform);
+		Text text = go.AddComponent<Text>();
+		text.font = font;
+		text.alignment = TextAnchor.UpperCenter;
+		text.horizontalOverflow = HorizontalWrapMode.Overflow;
+		text.text = contents;
+		return text;
+	}
+
+	public static Image MakeDot(this Canvas canvas, string name, Sprite sprite) {
+		GameObject go = new GameObject(name);
+		go.transform.SetParent(canvas.transform);
+		Image image = go.AddComponent<Image>();
+		image.sprite = sprite;
+		image.rectTransform.sizeDelta = new Vector2(20, 20);
+		return image;
+	}
+
+	public static SpriteRenderer MakeCircle(this Transform transform, string name, Sprite sprite) {
+		GameObject go = new GameObject(name);
+		go.transform.SetParent(transform);
+		go.transform.localPosition = new Vector3(0f, 0f, 0.1f);
+		SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+		sr.sprite = sprite;
+		return sr;
 	}
 }

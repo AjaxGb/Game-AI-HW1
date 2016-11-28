@@ -17,7 +17,9 @@ public class Kinematic {
 
 public interface ISteering {
 	void GetSteering(DynamicBase source, Kinematic target, ref Vector2 accel_u_s2, ref float torque_r_s2);
+	void ShowDebug(DynamicBase source, Canvas canvas);
 	void UpdateDebug(DynamicBase source);
+	void HideDebug(DynamicBase source);
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -32,7 +34,12 @@ public class DynamicBase : MonoBehaviour {
 
 	public float maxTorque_r_s2 = 5.0f;  // Radians/sec^2
 	public float maxRotSpeed_r_s = 6.0f; // Radians/sec
-	public float slowRotRadius_r = 1.0f;     // Radians
+	public float slowRotRadius_r = 1.0f; // Radians
+
+	public Canvas canvas;
+	public Font font;
+	public Sprite knob;
+	public Sprite radius;
 	
 	private bool _keepOnCamera = true;
 	private static int defaultLayer = 0;
@@ -48,8 +55,20 @@ public class DynamicBase : MonoBehaviour {
 			}
 		}
 	}
-	
-	public ISteering steering;
+
+	private ISteering _steering;
+	public ISteering steering {
+		get { return _steering; }
+		set {
+			if (_steering != null && this.isActiveAndEnabled) {
+				_steering.HideDebug(this);
+			}
+			_steering = value;
+			if (_steering != null && this.isActiveAndEnabled) {
+				_steering.ShowDebug(this, canvas);
+			}
+		}
+	}
 	
 	private Transform _targetChar;
 	private Rigidbody2D _targetRB;
@@ -118,8 +137,16 @@ public class DynamicBase : MonoBehaviour {
 		//targetChar = GameObject.FindObjectOfType<Transform>();
 	}
 
+	void OnEnable() {
+		if (_steering != null) _steering.ShowDebug(this, canvas);
+	}
+
 	void Update() {
-		if (steering != null) steering.UpdateDebug(this);
+		if (_steering != null) _steering.UpdateDebug(this);
+	}
+
+	void OnDisable() {
+		if (_steering != null) _steering.HideDebug(this);
 	}
 
 	void FixedUpdate() {

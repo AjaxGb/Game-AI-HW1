@@ -488,9 +488,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAccel_u_s2: 0.5
   maxSpeed_u_s: 2
-  maxTorque_r_s2: 4
-  maxRotSpeed_r_s: 8
+  maxTorque_r_s2: 6
+  maxRotSpeed_r_s: 12
   slowRotRadius_r: 0.2
+  canvas: {fileID: 1134046936}
+  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  knob: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  radius: {fileID: 21300000, guid: a981b49bd3eafde4297fa8b050466d40, type: 3}
 --- !u!50 &1045816893
 Rigidbody2D:
   serializedVersion: 2
@@ -710,9 +714,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAccel_u_s2: 0.6
   maxSpeed_u_s: 2.5
-  maxTorque_r_s2: 4
-  maxRotSpeed_r_s: 8
+  maxTorque_r_s2: 6
+  maxRotSpeed_r_s: 12
   slowRotRadius_r: 0.2
+  canvas: {fileID: 1134046936}
+  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  knob: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  radius: {fileID: 21300000, guid: a981b49bd3eafde4297fa8b050466d40, type: 3}
 --- !u!58 &1239766798
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -808,6 +816,10 @@ MonoBehaviour:
   maxTorque_r_s2: 1
   maxRotSpeed_r_s: 3
   slowRotRadius_r: 1
+  canvas: {fileID: 1134046936}
+  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  knob: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  radius: {fileID: 21300000, guid: a981b49bd3eafde4297fa8b050466d40, type: 3}
 --- !u!50 &1379959953
 Rigidbody2D:
   serializedVersion: 2

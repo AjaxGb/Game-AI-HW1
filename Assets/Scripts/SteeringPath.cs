@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class SteeringPath : ISteering {
 
@@ -34,6 +35,9 @@ public class SteeringPath : ISteering {
 		NearestPoint(source.transform.position, out nearestDistFromStart);
 
 		target.position_u = PointAtDist(nearestDistFromStart + this.targetDist);
+		if (targetDisplay != null) {
+			targetDisplay.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, target.position_u);
+		}
 		source.FacePosition(target.position_u, ref torque_r_s2);
 
 		// Find target speed + velocity
@@ -49,11 +53,25 @@ public class SteeringPath : ISteering {
 		accel_u_s2 = Vector2.ClampMagnitude(accel_u_s2, source.maxAccel_u_s2);
 	}
 
-	float d = 0f;
+	private Text nameDisplay;
+	private Image targetDisplay;
+
+	public void ShowDebug(DynamicBase source, Canvas canvas) {
+		HideDebug(source);
+		nameDisplay = canvas.MakeText("Path Name", source.font, "Dynamic Path Following");
+		targetDisplay = canvas.MakeDot("Path Target", source.knob);
+		nameDisplay.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, source.transform.position);
+	}
+
 	public void UpdateDebug(DynamicBase source) {
-		Debug.DrawLine(source.transform.position, PointAtDist(d));
-		d += 0.1f;
-		if (d > totalLength) d = 0f;
+		if (nameDisplay != null) {
+			nameDisplay.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, source.transform.position);
+		}
+	}
+
+	public void HideDebug(DynamicBase source) {
+		if (nameDisplay != null) Object.Destroy(nameDisplay.gameObject);
+		if (targetDisplay != null) Object.Destroy(targetDisplay.gameObject);
 	}
 
 	public static Vector2 NearestPointOnSegment(Vector2 p, Vector2 s1, Vector2 s2, out float sqrDist, out float t) {

@@ -64,7 +64,7 @@ public class Director : MonoBehaviour {
 					woodcutter.targetRB = wolf.rb;
 					wolf.targetRB = woodcutter.rb;
 					woodcutter.steering = new SteeringPursue(0f);
-					wolf.steering = new SteeringEvade(0f);
+					wolf.steering = new SteeringEvade();
 					woodcutter.keepOnCamera = wolf.keepOnCamera = false;
 				}
 				break;
